@@ -61,19 +61,25 @@ function boldAsterisk(text) {
 function setExampleSentence(word) {
   sentenceSyllabary.innerHTML = boldAsterisk(word.sentence.syllabary);
   sentencePhonetics.innerHTML = boldAsterisk(word.sentence.phonetics);
+  sentenceEnglish.innerHTML = "";
 }
 
 function setOptions(options, revealTranslation) {
-  
   const renderedOptions = options.map((option, idx) => {
+    let clicked = false;
     const elm = document.createElement("li");
     const button = document.createElement("button");
 
     button.innerHTML = option.third_present_syllabary;
     button.addEventListener("click", () => {
+      if(clicked) return;
+      else clicked = true;
+      const wordTranslation = document.createElement("span");
+      wordTranslation.innerHTML = option.definition;
+      wordTranslation.classList.add("translation");
+      elm.append(wordTranslation);
       if (idx === 0) {
         button.style = "background: var(--color-bg);";
-        elm.append()
         revealTranslation();
       } else {
         button.style = "background: red";
@@ -83,18 +89,18 @@ function setOptions(options, revealTranslation) {
     elm.append(button);
     return elm;
   });
-  
+
   optionsElm.replaceChildren(...shuffled(renderedOptions));
 }
 
 function nextWord() {
   const options = pickNRandom(wordIds, 4).map((id) => dict[id]);
   const word = options[0];
-  
+
   function revealTranslation() {
     sentenceEnglish.innerHTML = boldAsterisk(word.sentence.english);
   }
-  
+
   setExampleSentence(word);
   setOptions(options, revealTranslation);
 }

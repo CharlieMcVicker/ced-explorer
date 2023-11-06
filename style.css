@@ -196,6 +196,10 @@ h2 {
   margin: 10px;
 }
 
+.options li .translation {
+  margin-left: 4px;
+}
+
 /* Button dip
 - Toggling this class on and off will move it down and up again
 - The button transition property above determines the speed of the translate (500ms)
