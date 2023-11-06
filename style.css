@@ -170,9 +170,30 @@ h2 {
   color: #2800FF;
 }
 
-/* Interactive image */
-.illustration:active {
-  transform: translateY(5px);
+.example-sentence p {
+  margin: 0;
+}
+
+.example-sentence {
+  padding: 10px;
+  font-size: 2em;
+}
+
+.example-english {
+  font-style: italic;
+}
+
+.options { 
+  background: white;
+  border: 1px solid black;
+  margin: 0 auto;
+  width: 100%;
+  padding: 20px 40px;
+  border-radius: 10px;
+}
+
+.options li {
+  margin: 10px;
 }
 
 /* Button dip

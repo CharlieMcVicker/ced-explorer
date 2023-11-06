@@ -63,29 +63,40 @@ function setExampleSentence(word) {
   sentencePhonetics.innerHTML = boldAsterisk(word.sentence.phonetics);
 }
 
-function setOptions(options) {
+function setOptions(options, revealTranslation) {
+  
   const renderedOptions = options.map((option, idx) => {
     const elm = document.createElement("li");
     const button = document.createElement("button");
 
     button.innerHTML = option.third_present_syllabary;
-    button.addEventListner("click", () => {
-      if (idx === 1) {
-        button.style = "background: green;"
+    button.addEventListener("click", () => {
+      if (idx === 0) {
+        button.style = "background: var(--color-bg);";
+        elm.append()
+        revealTranslation();
+      } else {
+        button.style = "background: red";
       }
-    })
+    });
 
     elm.append(button);
     return elm;
   });
+  
   optionsElm.replaceChildren(...shuffled(renderedOptions));
 }
 
 function nextWord() {
   const options = pickNRandom(wordIds, 4).map((id) => dict[id]);
   const word = options[0];
+  
+  function revealTranslation() {
+    sentenceEnglish.innerHTML = boldAsterisk(word.sentence.english);
+  }
+  
   setExampleSentence(word);
-  setOptions(options);
+  setOptions(options, revealTranslation);
 }
 
 const nextBtn = document.querySelector(".next");
@@ -93,6 +104,7 @@ nextBtn.addEventListener("click", () => nextWord());
 
 const sentenceSyllabary = document.querySelector(".example-syllabary");
 const sentencePhonetics = document.querySelector(".example-phonetics");
+const sentenceEnglish = document.querySelector(".example-english");
 const optionsElm = document.querySelector(".options");
 
 nextWord();
