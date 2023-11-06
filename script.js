@@ -4,15 +4,44 @@ function hasFields(word) {
   return (
     word.sentence.phonetics.length > 0 &&
     word.sentence.syllabary.length > 0 &&
+    word.sentence.phonetics.includes("*") &&
+    word.sentence.syllabary.includes("*") &&
     !word.sentence.phonetics.startsWith("[")
   );
 }
 
 const wordIds = Object.keys(dict).filter((id) => hasFields(dict[id]));
 
-function randomWord() {
-  const idx = Math.floor(Math.random() * wordIds.length);
-  return dict[wordIds[idx]];
+function pickNRandom(options, n) {
+  const randomNumbers = new Array(n)
+    .fill(0)
+    .map((_, idx) => Math.floor(Math.random() * (options.length - idx)));
+
+  const [picked] = randomNumbers.reduce(
+    ([pickedOptions, pickedIdc], nextRandomNumber) => {
+      const nextIdx = pickedIdc.reduce(
+        (adjustedIdx, alreadyPickedIdx) =>
+          // bump up the index for each element we've removed if we are past it
+          // eg. [3] has been picked from [0 1 2 _3_ 4 5] and we have 3 has nextRandom number
+          // we bump up to 4, as if 3 weren't there
+          adjustedIdx + Number(adjustedIdx >= alreadyPickedIdx),
+        nextRandomNumber
+      );
+      return [
+        [...pickedOptions, options[nextIdx]],
+        [...pickedIdc, nextIdx].sort(),
+      ];
+    },
+    [[], []]
+  );
+
+  return picked;
+}
+
+function shuffled(list) {
+  const indexed = list.map((e) => [Math.random(), e]);
+  indexed.sort(([a], [b]) => a - b);
+  return indexed.map(([_, e]) => e);
 }
 
 function subAsterisk(text, pattern) {
@@ -34,14 +63,36 @@ function setExampleSentence(word) {
   sentencePhonetics.innerHTML = boldAsterisk(word.sentence.phonetics);
 }
 
+function setOptions(options) {
+  const renderedOptions = options.map((option, idx) => {
+    const elm = document.createElement("li");
+    const button = document.createElement("button");
+
+    button.innerHTML = option.third_present_syllabary;
+    button.addEventListner("click", () => {
+      if (idx === 1) {
+        button.style = "background: green;"
+      }
+    })
+
+    elm.append(button);
+    return elm;
+  });
+  optionsElm.replaceChildren(...shuffled(renderedOptions));
+}
+
 function nextWord() {
-  const word = randomWord();
+  const options = pickNRandom(wordIds, 4).map((id) => dict[id]);
+  const word = options[0];
   setExampleSentence(word);
+  setOptions(options);
 }
 
 const nextBtn = document.querySelector(".next");
 nextBtn.addEventListener("click", () => nextWord());
-const sentenceSyllabary = document.querySelector(".example-syllabary"); // Get the button from the page
-const sentencePhonetics = document.querySelector(".example-phonetics"); // Get the button from the page
+
+const sentenceSyllabary = document.querySelector(".example-syllabary");
+const sentencePhonetics = document.querySelector(".example-phonetics");
+const optionsElm = document.querySelector(".options");
 
 nextWord();
