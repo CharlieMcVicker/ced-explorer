@@ -62,11 +62,13 @@ const underdot = "\u0323"; // dot for under short vowels
 
 function formatTone(text) {
   return text
-    .replaceAll(/([aeiouv]\.?)1/gm, "$1¹")
-    .replaceAll(/([aeiouv]\.?)2/gm, "$1²")
-    .replaceAll(/([aeiouv]\.?)3/gm, "$1³")
-    .replaceAll(/([aeiouv]\.?)4/gm, "$1⁴")
-    .replaceAll(/([aeiouv])./gm, "$1" + underdot);
+    .replaceAll(/1/gm, "¹")
+    .replaceAll(/23/gm, "²³")
+    .replaceAll(/32/gm, "³²")
+    .replaceAll(/2/gm, "²")
+    .replaceAll(/3/gm, "³")
+    .replaceAll(/4/gm, "⁴")
+    .replaceAll(/([aeiouv])\./gm, "$1" + underdot);
 }
 
 function setExampleSentence(word) {
@@ -94,7 +96,7 @@ function setOptions(options, revealTranslation) {
         button.style = "background: var(--color-bg);";
         revealTranslation();
       } else {
-        button.style = "background: red";
+        button.style = "background: var(--color-bad);";
       }
     });
 
