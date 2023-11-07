@@ -58,6 +58,17 @@ function boldAsterisk(text) {
   return subAsterisk(text, "<strong>$1</strong>");
 }
 
+const underdot = "\u0323"; // dot for under short vowels
+
+function formatTone(text) {
+  return text
+    .replaceAll(/([aeiouv]\.?)1/gm, "$1¹")
+    .replaceAll(/([aeiouv]\.?)2/gm, "$1²")
+    .replaceAll(/([aeiouv]\.?)3/gm, "$1³")
+    .replaceAll(/([aeiouv]\.?)4/gm, "$1⁴")
+    .replaceAll(/([aeiouv])./gm, "$1" + underdot);
+}
+
 function setExampleSentence(word) {
   sentenceSyllabary.innerHTML = boldAsterisk(word.sentence.syllabary);
   sentencePhonetics.innerHTML = boldAsterisk(word.sentence.phonetics);
@@ -70,9 +81,10 @@ function setOptions(options, revealTranslation) {
     const elm = document.createElement("li");
     const button = document.createElement("button");
 
-    button.innerHTML = option.third_present_syllabary;
+    button.innerHTML =
+      option.third_present_syllabary + " / " + formatTone(option.third_present);
     button.addEventListener("click", () => {
-      if(clicked) return;
+      if (clicked) return;
       else clicked = true;
       const wordTranslation = document.createElement("span");
       wordTranslation.innerHTML = option.definition;
