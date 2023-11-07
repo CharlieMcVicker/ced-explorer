@@ -11,6 +11,7 @@ function hasFields(word) {
 }
 
 const wordIds = Object.keys(dict).filter((id) => hasFields(dict[id]));
+console.
 
 function pickNRandom(options, n) {
   const randomNumbers = new Array(n)
