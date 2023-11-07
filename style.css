@@ -179,6 +179,7 @@ h2 {
 .example-sentence {
   padding: 10px;
   font-size: 2em;
+  text-align: center;
 }
 
 .example-english {
