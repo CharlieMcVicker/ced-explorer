@@ -178,11 +178,16 @@ h2 {
 
 .example-sentence {
   padding: 10px;
-  font-size: 2em;
+  font-size: 1.5em;
   text-align: center;
 }
 
+.example-syllabary {
+  font-size: 1.5em;
+}
+
 .example-english {
+  margin: 12px 0 !important;
   font-style: italic;
 }
 
