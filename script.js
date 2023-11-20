@@ -76,6 +76,7 @@ function setExampleSentence(word) {
   sentenceSyllabary.innerHTML = boldAsterisk(word.sentence.syllabary);
   sentencePhonetics.innerHTML = boldAsterisk(word.sentence.phonetics);
   sentenceEnglish.innerHTML = "";
+  seeInCedBtn.onclick = () => openWordOnDictionary(word);
 }
 
 function setOptions(options, revealTranslation) {
@@ -122,6 +123,7 @@ function nextWord() {
 
 const nextBtn = document.querySelector(".next");
 nextBtn.addEventListener("click", () => nextWord());
+const seeInCedBtn = document.querySelector(".see-in-ced");
 
 const sentenceSyllabary = document.querySelector(".example-syllabary");
 const sentencePhonetics = document.querySelector(".example-phonetics");
@@ -129,3 +131,10 @@ const sentenceEnglish = document.querySelector(".example-english");
 const optionsElm = document.querySelector(".options");
 
 nextWord();
+
+async function openWordOnDictionary(word) {
+  const resp = await fetch(`https://cherokeedictionary.net/jsonsearch/en/${encodeURIComponent(word.definition)}`)
+  const [result] = await resp.json();
+  console.log(result)
+  window.open(`https://www.cherokeedictionary.net/share/${result.id}`, "_blank");
+}
