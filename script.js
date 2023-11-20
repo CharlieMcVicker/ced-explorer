@@ -76,7 +76,6 @@ function setExampleSentence(word) {
   sentenceSyllabary.innerHTML = boldAsterisk(word.sentence.syllabary);
   sentencePhonetics.innerHTML = boldAsterisk(word.sentence.phonetics);
   sentenceEnglish.innerHTML = "";
-  seeInCedBtn.onclick = () => openWordOnDictionary(word);
 }
 
 function setOptions(options, revealTranslation) {
@@ -91,8 +90,15 @@ function setOptions(options, revealTranslation) {
       if (clicked) return;
       else clicked = true;
       const wordTranslation = document.createElement("span");
-      wordTranslation.innerHTML = option.definition;
+      wordTranslation.innerHTML = option.definition + " ";
       wordTranslation.classList.add("translation");
+      
+      const cedLink = document.createElement("a");
+      cedLinkForWord(option).then((link) => cedLink.href=link);
+      cedLink.innerHTML = "see more"
+      cedLink.target = "_blank";
+      wordTranslation.append(cedLink);
+      
       elm.append(wordTranslation);
       if (idx === 0) {
         button.style = "background: var(--color-bg);";
@@ -123,7 +129,6 @@ function nextWord() {
 
 const nextBtn = document.querySelector(".next");
 nextBtn.addEventListener("click", () => nextWord());
-const seeInCedBtn = document.querySelector(".see-in-ced");
 
 const sentenceSyllabary = document.querySelector(".example-syllabary");
 const sentencePhonetics = document.querySelector(".example-phonetics");
@@ -132,9 +137,8 @@ const optionsElm = document.querySelector(".options");
 
 nextWord();
 
-async function openWordOnDictionary(word) {
+async function cedLinkForWord(word) {
   const resp = await fetch(`https://cherokeedictionary.net/jsonsearch/en/${encodeURIComponent(word.definition)}`)
   const [result] = await resp.json();
-  console.log(result)
-  window.open(`https://www.cherokeedictionary.net/share/${result.id}`, "_blank");
+  return `https://www.cherokeedictionary.net/share/${result.id}`;
 }
