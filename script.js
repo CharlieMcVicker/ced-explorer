@@ -90,7 +90,7 @@ function setOptions(options, revealTranslation) {
       if (clicked) return;
       else clicked = true;
       const wordTranslation = document.createElement("span");
-      wordTranslation.innerHTML = option.definition + " ";
+      wordTranslation.innerHTML = option.definition + " - ";
       wordTranslation.classList.add("translation");
       
       const cedLink = document.createElement("a");
