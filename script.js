@@ -92,13 +92,13 @@ function setOptions(options, revealTranslation) {
       const wordTranslation = document.createElement("span");
       wordTranslation.innerHTML = option.definition + " - ";
       wordTranslation.classList.add("translation");
-      
+
       const cedLink = document.createElement("a");
-      cedLinkForWord(option).then((link) => cedLink.href=link);
-      cedLink.innerHTML = "see more"
+      cedLinkForWord(option).then((link) => (cedLink.href = link));
+      cedLink.innerHTML = "see more";
       cedLink.target = "_blank";
       wordTranslation.append(cedLink);
-      
+
       elm.append(wordTranslation);
       if (idx === 0) {
         button.style = "background: var(--color-bg);";
@@ -138,7 +138,14 @@ const optionsElm = document.querySelector(".options");
 nextWord();
 
 async function cedLinkForWord(word) {
-  const resp = await fetch(`https://cherokeedictionary.net/jsonsearch/en/${encodeURIComponent(word.definition)}`)
-  const [result] = await resp.json();
+  const resp = await fetch(
+    `https://cherokeedictionary.net/jsonsearch/en/${encodeURIComponent(
+      word.definition
+    )}`
+  );
+  const json = await resp.json();
+  console.log(json);
+  console.log(word)
+  const [result] = json.filter((r) => (r.syllabaryb == word.third_present_syllabary));
   return `https://www.cherokeedictionary.net/share/${result.id}`;
 }
