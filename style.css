@@ -182,6 +182,10 @@ h2 {
   text-align: center;
 }
 
+.example-sentence strong {
+  text-decoration: underline;
+}
+
 .example-syllabary {
   font-size: 1.5em;
 }
