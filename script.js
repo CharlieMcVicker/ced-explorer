@@ -127,8 +127,19 @@ function nextWord() {
   setOptions(options, revealTranslation);
 }
 
+const settingsForm = document.querySelector(".settings");
 const nextBtn = document.querySelector(".next");
-nextBtn.addEventListener("click", () => nextWord());
+
+settingsForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  nextWord();
+});
+
+let targetForm = settingsForm.elements["targetForm"].value;
+console.log(targetForm)
+
+settingsForm.elements["targetForm"].addEventListener("change", (e) => {e.preventDefault(); targetForm = e.target.value; console.log(targetForm)})
+
 
 const sentenceSyllabary = document.querySelector(".example-syllabary");
 const sentencePhonetics = document.querySelector(".example-phonetics");
@@ -145,7 +156,9 @@ async function cedLinkForWord(word) {
   );
   const json = await resp.json();
   console.log(json);
-  console.log(word)
-  const [result] = json.filter((r) => (r.syllabaryb == word.third_present_syllabary));
+  console.log(word);
+  const [result] = json.filter(
+    (r) => r.syllabaryb == word.third_present_syllabary
+  );
   return `https://www.cherokeedictionary.net/share/${result.id}`;
 }

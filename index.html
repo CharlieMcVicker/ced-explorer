@@ -33,9 +33,25 @@
       <div class="content" role="main">
         <h1 class="title">CED Explorer!</h1>
         <p>Explore the Cherokee English Dictionary!</p>
-        <button class="next">
-          Next
-        </button>
+        <form class="settings">
+          <div>
+            <label>
+              Answer with...
+              <select name="targetForm">
+                <option value="3pres">Third person present</option>
+                <option value="1pres">First person present</option>
+                <option value="3cpl">Third person completive past</option>
+                <option value="3inc">Third person habitual</option>
+                <option value="2imp">Second person imperative</option>
+                <option value="3inf">Third person infinitive</option>
+                <option value="rand">Random form</option>
+              </select>
+            </label>
+          </div>
+          <div>
+            <button class="next">Next</button>
+          </div>
+        </form>
         <div class="example-sentence">
           <!--           <h2>Random sentence...</h2> -->
           <p class="example-syllabary"></p>

@@ -181,6 +181,11 @@ h2 {
   color: #2800FF;
 }
 
+.next {
+  margin: 10px auto 0;
+  display: block;
+}
+
 .example-sentence p {
   margin: 0;
 }
