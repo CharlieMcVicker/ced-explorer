@@ -10,8 +10,9 @@ function hasFields(word) {
   );
 }
 
-const wordIds = Object.keys(dict).filter((id) => hasFields(dict[id]));
-console.log(wordIds.length);
+function validWordsForForm(form) {
+  return Object.keys(dict).filter((id) => hasFields(dict[id]) && dict[id][form].strip().replace("-", "").length > 0);
+}
 
 function pickNRandom(options, n) {
   const randomNumbers = new Array(n)
@@ -79,13 +80,14 @@ function setExampleSentence(word) {
 }
 
 function setOptions(options, revealTranslation) {
+  const form = targetForm === "rand" ? pickNRandom(possibleForms, 1)[0] : targetForm;
   const renderedOptions = options.map((option, idx) => {
     let clicked = false;
     const elm = document.createElement("li");
     const button = document.createElement("button");
-
+    
     button.innerHTML =
-      option.third_present_syllabary + " / " + formatTone(option.third_present);
+      option[form+"_syllabary"] + " / " + formatTone(option[form]);
     button.addEventListener("click", () => {
       if (clicked) return;
       else clicked = true;
@@ -116,6 +118,7 @@ function setOptions(options, revealTranslation) {
 }
 
 function nextWord() {
+  if (wordIds )
   const options = pickNRandom(wordIds, 4).map((id) => dict[id]);
   const word = options[0];
 
@@ -136,15 +139,20 @@ settingsForm.addEventListener("submit", (e) => {
 });
 
 let targetForm = settingsForm.elements["targetForm"].value;
-console.log(targetForm)
+let wordIds = null;
 
-settingsForm.elements["targetForm"].addEventListener("change", (e) => {e.preventDefault(); targetForm = e.target.value; console.log(targetForm)})
+settingsForm.elements["targetForm"].addEventListener("change", (e) => {e.preventDefault(); if (targetForm !== e.target.value) {
+  targetForm = e.target.value;
+  wordIds = null;
+}})
+const possibleForms = [...settingsForm.elements["targetForm"].children].map(e => e.value).filter(f => f!=="rand");
 
 
 const sentenceSyllabary = document.querySelector(".example-syllabary");
 const sentencePhonetics = document.querySelector(".example-phonetics");
 const sentenceEnglish = document.querySelector(".example-english");
 const optionsElm = document.querySelector(".options");
+
 
 nextWord();
 
