@@ -123,6 +123,7 @@ body {
   place-items: center;
   margin: 0 1rem;
 }
+
 .content {
   display: flex;
   flex-direction: column;
@@ -141,6 +142,14 @@ body {
   line-height: 105%;
   margin: 0;
 }
+
+
+@media(max-width: 600px) {
+  .title {
+    font-size: 50px;
+  }
+}
+
 
 /* Very light scaling for our illustration */
 .illustration {
@@ -180,6 +189,13 @@ h2 {
   padding: 10px;
   font-size: 1.5em;
   text-align: center;
+}
+
+
+@media(max-width: 600px) {
+  .example-sentence {
+    font-size: 1.2em;
+  }
 }
 
 .example-sentence strong {
