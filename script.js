@@ -11,7 +11,7 @@ function hasFields(word) {
 }
 
 function validWordsForForm(form) {
-  return Object.keys(dict).filter((id) => hasFields(dict[id]) && dict[id][form].strip().replace("-", "").length > 0);
+  return Object.keys(dict).filter((id) => hasFields(dict[id]) && dict[id][form].trim().replaceAll("-", "").length > 0);
 }
 
 function pickNRandom(options, n) {
@@ -70,6 +70,7 @@ function formatTone(text) {
     .replaceAll(/2/gm, "²")
     .replaceAll(/3/gm, "³")
     .replaceAll(/4/gm, "⁴")
+    .replaceAll(/\?/gm, "Ɂ")
     .replaceAll(/([aeiouv])\./gm, "$1" + underdot);
 }
 
@@ -79,8 +80,7 @@ function setExampleSentence(word) {
   sentenceEnglish.innerHTML = "";
 }
 
-function setOptions(options, revealTranslation) {
-  const form = targetForm === "rand" ? pickNRandom(possibleForms, 1)[0] : targetForm;
+function setOptions(options, revealTranslation, form) {
   const renderedOptions = options.map((option, idx) => {
     let clicked = false;
     const elm = document.createElement("li");
@@ -118,7 +118,10 @@ function setOptions(options, revealTranslation) {
 }
 
 function nextWord() {
-  if (wordIds )
+  const form = targetForm === "rand" ? pickNRandom(possibleForms, 1)[0] : targetForm;
+  if (wordIds === null || targetForm === "rand") {
+    wordIds = validWordsForForm(form)
+  }
   const options = pickNRandom(wordIds, 4).map((id) => dict[id]);
   const word = options[0];
 
@@ -127,7 +130,7 @@ function nextWord() {
   }
 
   setExampleSentence(word);
-  setOptions(options, revealTranslation);
+  setOptions(options, revealTranslation, form);
 }
 
 const settingsForm = document.querySelector(".settings");
@@ -146,7 +149,7 @@ settingsForm.elements["targetForm"].addEventListener("change", (e) => {e.prevent
   wordIds = null;
 }})
 const possibleForms = [...settingsForm.elements["targetForm"].children].map(e => e.value).filter(f => f!=="rand");
-
+console.log(possibleForms)
 
 const sentenceSyllabary = document.querySelector(".example-syllabary");
 const sentencePhonetics = document.querySelector(".example-phonetics");
