@@ -216,13 +216,24 @@ h2 {
   font-style: italic;
 }
 
-.options { 
+.options-wrapper { 
   background: white;
   border: 1px solid black;
   margin: 0 auto;
   width: 100%;
-  padding: 20px 40px;
+  padding: 20px;
   border-radius: 10px;
+}
+
+.options-wrapper h3 {
+  font-size: 1em;
+  text-align: center;
+  margin-top: 0;
+}
+
+.options {
+  margin: 0;
+  padding: 0 10px;
 }
 
 .options li {
